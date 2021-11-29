@@ -7,7 +7,7 @@ import gollux from "../gollux.png"
 import eth from "../eth.png"
 import dai from "../dai.png"
 import { YourWallet } from "./yourWallet"
-import { Snackbar, Typography, makeStyles } from "@material-ui/core"
+import { Snackbar, Typography, makeStyles, Badge } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 import { TokenFarmContract } from "./tokenFarmContract"
 import React, { useEffect, useState } from "react"
@@ -23,18 +23,34 @@ const useStyles = makeStyles((theme) => ({
     title: {
         color: theme.palette.common.white,
         textAlign: "center",
-        paddingBottom: theme.spacing(4)
     },
     imgWrapper: {
         width: "100%",
         textAlign: "center",
         display: "flex",
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: theme.spacing(4),
     },
     tokenImg: {
         width: "70px",
         height: "max-content"
     },
+    badgeWrapper: {
+        background: "linear-gradient(135deg, hsl(313, 61%, 23%), hsl(313, 61%, 36%), hsl(313, 61%, 49%))",
+        padding: "2px 5px 2px 5px",
+        paddingBottom: "5px",
+        borderRadius: "10px",
+        marginLeft: "10px",
+        height: "max-content",
+        width: "max-content",
+        display: 'flex',
+        justifyContent: "center",
+        color: "white",
+        fontSize: "13px",
+        fontWeight: 600,
+    }
 }))
 
 export const Main = () => {
@@ -77,11 +93,20 @@ export const Main = () => {
         showNetworkError && setShowNetworkError(false)
     }
 
+    useEffect(() => {
+        if (error && error.name === "UnsupportedChainIdError") {
+          !showNetworkError && setShowNetworkError(true)
+        } else {
+          showNetworkError && setShowNetworkError(false)
+        }
+    }, [error, showNetworkError])
+
     return (
     <>
         <div className={classes.imgWrapper}>
             <img className={classes.tokenImg} src={gollux} alt="token logo" />
             <h2 className={classes.title}>Gollux Exchange</h2>
+            <div className={classes.badgeWrapper}><span>KOVAN</span></div>
         </div>
         <YourWallet supportedTokens={supportedTokens} />
         <TokenFarmContract supportedTokens={supportedTokens} />
@@ -91,7 +116,7 @@ export const Main = () => {
             onClose={handleCloseNetworkError}
         >
             <Alert onClose={handleCloseNetworkError} severity="warning">
-            You gotta connect to the Kovan or Rinkeby network!
+            You have to connect to the Kovan network!
             </Alert>
         </Snackbar>
     </>

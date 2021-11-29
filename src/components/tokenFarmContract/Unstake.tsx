@@ -43,8 +43,7 @@ export const Unstake = ({ token }: UnstakeFormProps) => {
     ? parseFloat(formatUnits(balance, 18))
     : 0
 
-  const { send: unstakeTokensSend, state: unstakeTokensState } =
-    useUnstakeTokens()
+  const { send: unstakeTokensSend, state: unstakeTokensState } = useUnstakeTokens()
 
   const handleUnstakeSubmit = () => {
     return unstakeTokensSend(tokenAddress)

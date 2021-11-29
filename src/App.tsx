@@ -8,7 +8,7 @@ import { Main } from "./components/Main"
 function App() {
   return (
     <DAppProvider config={{
-      supportedChains: [ChainId.Kovan, ChainId.Rinkeby],
+      supportedChains: [ChainId.Kovan],
       notifications: {
         expirationPeriod: 1000,
         checkInterval: 1000
