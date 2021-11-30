@@ -43,6 +43,8 @@ export const Unstake = ({ token }: UnstakeFormProps) => {
     ? parseFloat(formatUnits(balance, 18))
     : 0
 
+  const formattedInterestBalance = formattedBalance + Math.round(formattedBalance*0.00035*1000) / 1000
+
   const { send: unstakeTokensSend, state: unstakeTokensState } = useUnstakeTokens()
 
   const handleUnstakeSubmit = () => {
@@ -76,10 +78,16 @@ export const Unstake = ({ token }: UnstakeFormProps) => {
     <>
       <div className={classes.contentContainer}>
         <BalanceMsg
-          label={`Your staked ${name} balance`}
+          label={`Your deposited ${name} balance`}
           amount={formattedBalance}
           tokenImgSrc={image}
         />
+        {formattedBalance > 0 ?
+        <BalanceMsg
+          label={`Interest of 0.35%`}
+          amount={formattedInterestBalance}
+          tokenImgSrc={image}
+        /> : <></>}
         <Button
           className={classes.unstakeButton}
           color="primary"
@@ -88,7 +96,7 @@ export const Unstake = ({ token }: UnstakeFormProps) => {
           onClick={handleUnstakeSubmit}
           disabled={isMining}
         >
-          {isMining ? <CircularProgress className={classes.circularProgress} size={26} /> : `Unstake ${name}`}
+          {isMining ? <CircularProgress className={classes.circularProgress} size={26} /> : `Withdraw ${name}`}
         </Button>
       </div>
       <Snackbar
